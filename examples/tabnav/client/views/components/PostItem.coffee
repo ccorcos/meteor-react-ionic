@@ -1,4 +1,3 @@
-
 Item = React.createFactory(Ionic.Item)
 {h2, p} = React.DOM
 
@@ -23,20 +22,14 @@ React.createClassFactory
       (p {}, @state.post.user.username)
     )
 
-
-List = React.createFactory(Ionic.List)
-{PostItem} = React.factories
+Icon = React.createFactory(Ionic.Icon)
 
 React.createClassFactory
-  displayName: 'PostList'
+  displayName: 'LoadingItem'
   mixins: [React.addons.PureRenderMixin]
 
-  propTypes:
-    postIds: React.PropTypes.arrayOf(React.PropTypes.string).isRequired
-    onClick: React.PropTypes.func
-
   render: -> 
-    console.log "PostList render"
-    (List {}, @props.postIds.map (postId) =>
-      (PostItem {key: postId, postId: postId, onClick: => @props.onClick(postId)})
+    console.log "LoadingItem render"
+    (Item {style:{textAlign:'center', borderBottom:0}}, 
+      (Icon {icon:'load-b', spin:true, style:{fontSize:'25px'}})
     )
