@@ -10,9 +10,12 @@ Ionic.mixins = {}
 var Classable = {
     propTypes: {
         className: React.PropTypes.string
-    },
-    getClasses() {
-        return classSet(this.props.className, classSet.apply(null, arguments));
+    }
+}
+
+var Styleable = {
+    propTypes: {
+        style: React.PropTypes.object
     }
 }
 
@@ -55,12 +58,10 @@ BackgroundColorable = function(prefix) {
 Ionic.mixins.Colorable = Colorable
 Ionic.mixins.BackgroundColorable = BackgroundColorable 
 Ionic.mixins.Classable = Classable
-
+Ionic.mixins.Styleable = Styleable
 
 
 Ionic.Body = React.createClass({
-    mixins: [ Classable ],
-
     render() {
         return (
             <div className='ionic'>
@@ -75,10 +76,16 @@ Ionic.Body = React.createClass({
 
 
 Ionic.Title = React.createClass({
-
+    mixins: [Classable, Styleable],
     render() {
+        var c = {'title': true}
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+        var classes = classSet(c);
+
         return (
-            <h1 className='title'>
+            <h1 className={classes} style={this.props.style}>
                 {this.props.children}
             </h1>
         ) 
@@ -88,7 +95,7 @@ Ionic.Title = React.createClass({
 
 Ionic.Bar = React.createClass({
 
-    mixins: [ Colorable('bar'), Classable ],
+    mixins: [ Colorable('bar'), Classable , Styleable],
 
     propTypes: {
         position: React.PropTypes.oneOf(['header', 'subheader', 'footer']).isRequired
@@ -105,8 +112,15 @@ Ionic.Bar = React.createClass({
     },
 
     render() {
+        var c = {'bar': true}
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+        c[this.getPositionClass()] = true
+        c[this.getColorClass()] = true
+        var classes = classSet(c);
         return (
-            <div className={this.getClasses('bar', this.getColorClass(), this.getPositionClass())}>
+            <div className={classes} style={this.props.style}>
                 {this.props.children}
             </div>
         )
@@ -117,7 +131,7 @@ Ionic.Bar = React.createClass({
 Bar = Ionic.Bar
 
 Ionic.Header = React.createClass({
-    mixins: [ Colorable('bar'), Classable ],
+    mixins: [ Colorable('bar'), Classable , Styleable],
 
     render() {
         return <Bar {...this.props} position='header'/>
@@ -141,7 +155,7 @@ Ionic.Footer = React.createClass({
 })
 
 Ionic.Content = React.createClass({
-    mixins: [ Classable ],
+    mixins: [ Classable, Styleable],
 
     getDefaultProps() {
         return {
@@ -153,36 +167,52 @@ Ionic.Content = React.createClass({
     },
 
     render() {
-        classes = classSet({
+        var c =  {
             'content': true,
             'overflow-scroll': true,
             'has-header': this.props.header,
             'has-footer': this.props.footer,
             'has-tabs-top': this.props.tabsTop,
             'has-tabs': this.props.tabs
-        })
+        }
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+        var classes = classSet(c);
 
-        return <div className={classes}>{this.props.children}</div>
+        return <div className={classes} style={this.props.style}>{this.props.children}</div>
     }
 })
 
 Ionic.Padding = React.createClass({
-    mixins: [ Classable ],
+    mixins: [ Classable, Styleable],
     render() {
-        return <div className='padding'>{this.props.children}</div>
+        var c =  {'padding': true}
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+        var classes = classSet(c);
+
+        return <div className={classes} style={this.props.style}>{this.props.children}</div>
     }
 })
 
 Ionic.List = React.createClass({
-    mixins: [ Classable ],
+    mixins: [ Classable, Styleable],
     render() {
-        return <div className='list'>{this.props.children}</div>
+        var c =  {'list': true}
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+        var classes = classSet(c);
+       
+        return <div className={classes} style={this.props.style}>{this.props.children}</div>
     }
 })
 
 
 Ionic.Item = React.createClass({
-    mixins: [ Colorable('item'), Classable ],
+    mixins: [ Colorable('item'), Classable, Styleable],
 
     propTypes: {
         onClick: React.PropTypes.func,
@@ -197,14 +227,20 @@ Ionic.Item = React.createClass({
     },
 
     render() {
-        var color = this.getColorClass()
-        var cs = {}
-        cs[color] = true
-        cs['item'] = true
-        cs['item-input'] = this.props.input
-        var classes = classSet(cs)
+        var c =  {
+            'item': true,
+            'item-input': this.props.input,
+        }
+
+        c[this.getColorClass()] = true
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
+
+        var classes = classSet(c);
+
         return (
-            <label className={classes} onClick={this.props.onClick}>
+            <label className={classes} style={this.props.style} onClick={this.props.onClick}>
                 {this.props.children}
             </label>
         )
@@ -216,7 +252,7 @@ Ionic.Item = React.createClass({
 
 Ionic.Button = React.createClass({
 
-    mixins: [ Ionic.mixins.Colorable('button'), Ionic.mixins.Classable ],
+    mixins: [Colorable('button'), Classable, Styleable],
 
     propTypes: {
         width: React.PropTypes.oneOf(['full', 'block']),
@@ -249,6 +285,9 @@ Ionic.Button = React.createClass({
         cs[color] = true
         cs['icon'] = this.props.iconOnly
 
+        if (this.props.className) {
+            c[this.props.className] = true
+        }
         if (this.props.icon) {
             cs['ion-'+this.props.icon] = true
             cs['icon-'+this.props.iconPosition] = true
@@ -267,13 +306,13 @@ Ionic.Button = React.createClass({
 
         if (this.props.div) {
             return (
-                <div className={classes} onClick={this.props.onClick}>
+                <div className={classes} style={this.props.style} onClick={this.props.onClick}>
                     {this.props.children}
                 </div>
             )       
         } else {
             return (
-                <button className={classes} onClick={this.props.onClick}>
+                <button className={classes} style={this.props.style} onClick={this.props.onClick}>
                     {this.props.children}
                 </button>
             )  
@@ -282,7 +321,7 @@ Ionic.Button = React.createClass({
 });
 
 Ionic.Tabs = React.createClass({
-    mixins: [ Classable , Colorable('tabs-color'), BackgroundColorable('tabs-background')],
+    mixins: [ Colorable('tabs-color'), BackgroundColorable('tabs-background')],
 
     propTypes: {
         iconOnly: React.PropTypes.bool,
@@ -334,7 +373,6 @@ Ionic.Tabs = React.createClass({
 
 
 Ionic.Tab = React.createClass({
-    mixins: [ Classable ],
 
     propTypes: {
         href: React.PropTypes.string,
@@ -358,14 +396,25 @@ Ionic.Tab = React.createClass({
 });
 
 Ionic.Icon = React.createClass({
+    mixins: [ Styleable ],
 
     propTypes: {
         icon: React.PropTypes.string.isRequired,
+        spin: React.PropTypes.bool,
+    },
+
+    getDefaultProps() {
+        return {
+              spin: false
+        };
     },
 
     render() {
         classes = 'icon ion-'+this.props.icon
-        return <i className={classes}></i>
+        if (this.props.spin) {
+            classes += " ion-spin"
+        }
+        return <i className={classes} style={this.props.style}></i>
     }
 });
 

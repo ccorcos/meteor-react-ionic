@@ -20,7 +20,7 @@ React.createClassFactory
     console.log "PostItem render"
     (Item {onClick: @props.onClick},
       (h2 {}, @state.post.title)
-      (p {}, @state.post.user?.username)
+      (p {}, @state.post.user.username)
     )
 
 

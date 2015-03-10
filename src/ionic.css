@@ -18,7 +18,6 @@
   MIT License: https://github.com/driftyco/ionicons
 */
 
-
 .ion-spin, .ion-loading-a, .ion-loading-b, .ion-loading-c, .ion-loading-d, .ion-looping, .ion-refreshing, .ion-ios7-reloading {
   -webkit-animation: spin 1s infinite linear;
   -moz-animation: spin 1s infinite linear;
