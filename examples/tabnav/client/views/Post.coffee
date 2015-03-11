@@ -6,6 +6,9 @@ Content = React.createFactory(Ionic.Content)
 {p, h2} = React.DOM
 {TabBar} = React.factories
 
+subsCache = new SubsCache
+  expireAter: 5 # minutes
+  cacheLimit: 20
 
 React.createClassFactory
   displayName: "Post"
@@ -15,7 +18,8 @@ React.createClassFactory
     postId: React.PropTypes.string.isRequired
 
   getMeteorSubs: ->
-    CacheSubs.subscribe('post', @rprops.postId.get())
+    subsCache.subscribe('post', @rprops.postId.get())
+    return () -> subsCache.ready()
 
   getMeteorState: 
     post: ->
@@ -31,8 +35,8 @@ React.createClassFactory
       (do =>
         if @state.post
           (Content {header: true, tabs: true},
-            (h2 {}, @state.post?.title)
-            (p {},  @state.post?.user?.username)
+            (h2 {}, @state.post.title)
+            (p {},  @state.post.user.username)
           )
         else
           (Content {header: true, tabs: true},
@@ -41,5 +45,5 @@ React.createClassFactory
             )
           )
       )
-      (TabBar {active: 'settings'})
+      (TabBar {active: 'home'})
     )

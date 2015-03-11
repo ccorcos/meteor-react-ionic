@@ -1,4 +1,3 @@
-
 Tabs = React.createFactory(Ionic.Tabs)
 Tab = React.createFactory(Ionic.Tab)
 Icon = React.createFactory(Ionic.Icon)
@@ -8,7 +7,7 @@ React.createClassFactory
   mixins: [React.addons.PureRenderMixin]
 
   propTypes:
-    active: React.PropTypes.oneOf(['home', 'search', 'plus', 'activity', 'settings']).isRequired
+    active: React.PropTypes.oneOf(['home', 'settings']).isRequired
 
   render: ->
     (Tabs {iconOnly: true},
