@@ -8,7 +8,7 @@ Content = React.createFactory(Ionic.Content)
 
 React.createClassFactory
   displayName: "Settings"
-  mixins: [React.MeteorMixin, React.addons.PureRenderMixin]
+  mixins: [React.addons.PureRenderMixin]
 
   render: ->
     (Body {},

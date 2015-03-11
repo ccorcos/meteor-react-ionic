@@ -1,11 +1,6 @@
 ## To Do
 
+- page route using query params. then animate!
 
-
-
-
-- publish subscribe
-- infinite scrolling
-- loading
 - animation
 - rememeber page offset
