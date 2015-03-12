@@ -5,7 +5,7 @@ Content = React.createFactory(Ionic.Content)
 Padding = React.createFactory(Ionic.Padding)
 
 {p, h2, div} = React.DOM
-{TabBar, Spinner} = React.factories
+{TabBar, Spinner, Nav} = React.factories
 
 subsCache = new SubsCache
   expireAter: 5 # minutes
@@ -46,7 +46,7 @@ React.createClassFactory
 
   render: ->
     (Body {},
-      (Header {position:'header', color: 'positive'},
+      (Nav {color: 'positive'},
         (NavBackButton {onClick:@props.onBack, color: 'positive'})
         (Title {}, 'Post')
       )

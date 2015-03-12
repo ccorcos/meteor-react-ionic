@@ -9,10 +9,5 @@ nav animation notes:
 lets just do nav stuff all just fades in and out on a navigation push/pop
 content slides as expected.
 
-Animator.pushTo('/')
-Animator.popTo('/')
-Animator.tabTo('/')
-
-create a middleware for FlowRouter as well.
 
 maintain scroll

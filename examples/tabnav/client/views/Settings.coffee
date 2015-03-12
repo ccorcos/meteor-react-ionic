@@ -4,7 +4,7 @@ Title = React.createFactory(Ionic.Title)
 Content = React.createFactory(Ionic.Content)
 
 {p} = React.DOM
-{TabBar} = React.factories
+{TabBar, Nav} = React.factories
 
 React.createClassFactory
   displayName: "Settings"
@@ -12,9 +12,9 @@ React.createClassFactory
 
   render: ->
     (Body {},
-      (Header {position:'header', color: 'positive'},
-        (Title {}, 'Settings')
-      )
+      # (Nav {color: 'positive'},
+      #   (Title {}, 'Settings')
+      # )
       (Content {header: true, tabs: true},
         (p {}, 'nothing here yet')
       )
