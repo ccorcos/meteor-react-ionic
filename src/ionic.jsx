@@ -17,7 +17,12 @@ Colorable = function(prefix) {
     return {
         getColorClass() {
             if (this.props.color) {
-                return prefix + '-' + this.props.color;
+                if (prefix) {
+                    return prefix + '-' + this.props.color;
+                }
+                else {
+                    return this.props.color
+                }
             }
         },
 
@@ -389,6 +394,8 @@ Ionic.Tab = React.createClass({
 });
 
 Ionic.Icon = React.createClass({
+    mixins: [Colorable(), Classable],
+
     propTypes: {
         icon: React.PropTypes.string.isRequired,
         spin: React.PropTypes.bool,
@@ -402,10 +409,16 @@ Ionic.Icon = React.createClass({
 
     render() {
         classes = 'icon ion-'+this.props.icon
+        if (this.props.className)
+            classes += ' ' + this.props.className
+        color = this.getColorClass()
+        if (color)
+            classes += ' ' + color
         if (this.props.spin) {
             classes += " ion-spin"
         }
-        return <i className={classes} {...this.props}></i>
+        props = _.pick(this.props, 'style', 'onClick')
+        return <i className={classes} {...props}></i>
     }
 });
 
