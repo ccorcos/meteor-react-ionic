@@ -118,7 +118,7 @@ Ionic.Bar = React.createClass({
         c[this.getColorClass()] = true
         var classes = classSet(c);
         return (
-            <div className={classes} {...this.props}>
+            <div {...this.props} className={classes}>
                 {this.props.children}
             </div>
         )
