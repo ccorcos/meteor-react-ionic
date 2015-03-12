@@ -24,10 +24,18 @@ React.createClassFactory
 Icon = React.createFactory(Ionic.Icon)
 
 React.createClassFactory
+  displayName: 'Spinner'
+  mixins: [React.addons.PureRenderMixin]
+  render: ->
+    (Icon {icon:'load-b', spin:true, style:{fontSize:'25px'}})
+
+{Spinner} = React.factories
+
+React.createClassFactory
   displayName: 'LoadingItem'
   mixins: [React.addons.PureRenderMixin]
 
   render: -> 
     (Item {style:{textAlign:'center', borderBottom:0}}, 
-      (Icon {icon:'load-b', spin:true, style:{fontSize:'25px'}})
+      Spinner()
     )

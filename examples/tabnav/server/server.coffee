@@ -19,11 +19,25 @@ Meteor.startup ->
         userId: user._id
         date: Date.now()
 
+
 Meteor.publishComposite 'posts', (limit) ->
 
   return {
     find: ->
       Posts.find({}, {sort: {name: 1, date: -1}, limit: limit}  )
+    children: [
+      { 
+        find: (post) ->
+            Meteor.users.find({_id: post.userId}, {fields: {_id: 1, username: 1}})
+      }
+    ]
+  }
+
+Meteor.publishComposite 'post', (postId) ->
+
+  return {
+    find: ->
+      Posts.find({_id:postId})
     children: [
       { 
         find: (post) ->

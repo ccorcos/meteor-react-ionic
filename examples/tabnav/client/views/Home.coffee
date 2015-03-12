@@ -70,10 +70,11 @@ React.createClassFactory
   renderLoading: () ->
     (LoadingItem {})
 
-  clickPost: (post) ->
-    console.log "clicked post", post
+  clickPost: (postId) ->
+    FlowRouter.go('/', {}, {postId})
 
   render: ->
+    console.log "renderHome"
     (Body {},
       (Header {position:'header', color: 'positive'},
         (Title {}, 'Home')

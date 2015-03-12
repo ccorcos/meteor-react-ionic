@@ -2,13 +2,29 @@ Body = React.createFactory(Ionic.Body)
 Header = React.createFactory(Ionic.Header)
 Title = React.createFactory(Ionic.Title)
 Content = React.createFactory(Ionic.Content)
+Padding = React.createFactory(Ionic.Padding)
 
-{p, h2} = React.DOM
-{TabBar} = React.factories
+{p, h2, div} = React.DOM
+{TabBar, Spinner} = React.factories
 
 subsCache = new SubsCache
   expireAter: 5 # minutes
   cacheLimit: 20
+
+Button = React.createFactory(Ionic.Button)
+
+React.createClassFactory
+  displayName: "NavBackButton"
+  mixins: [React.addons.PureRenderMixin]
+
+  propTypes:
+    onClick: React.PropTypes.func
+
+  render: ->
+    (Button _.extend(@props, {iconOnly: true, icon:'ios-arrow-back', onClick:@props.onClick}))
+
+
+{NavBackButton} = React.factories
 
 React.createClassFactory
   displayName: "Post"
@@ -16,32 +32,42 @@ React.createClassFactory
 
   propTypes:
     postId: React.PropTypes.string.isRequired
+    onBack: React.PropTypes.func.isRequired
 
   getMeteorSubs: ->
-    subsCache.subscribe('post', @rprops.postId.get())
-    return () -> subsCache.ready()
+    sub = subsCache.subscribe('post', @rprops.postId.get())
+    return () -> sub.ready()
 
   getMeteorState: 
     post: ->
-      post = Post.findOne(@rprops.postId.get())
+      post = Posts.findOne(@rprops.postId.get())
       post?.user = Meteor.users.findOne(post?.userId)
       return post
 
   render: ->
     (Body {},
       (Header {position:'header', color: 'positive'},
+        (NavBackButton {onClick:@props.onBack, color: 'positive'})
         (Title {}, 'Post')
       )
       (do =>
         if @state.post
           (Content {header: true, tabs: true},
-            (h2 {}, @state.post.title)
-            (p {},  @state.post.user.username)
+            (Padding {}, 
+              (h2 {}, @state.post.title)
+              (p {},  @state.post.user.username)
+            )
           )
-        else
+        else if @state.subsReady
           (Content {header: true, tabs: true},
             (h2 {style:{paddingTop: 20, textAlign:'center'}},
               '404'
+            )
+          )
+        else
+          (Content {header: true, tabs: true},
+            (Padding {style:{textAlign:'center'}},
+              Spinner()
             )
           )
       )

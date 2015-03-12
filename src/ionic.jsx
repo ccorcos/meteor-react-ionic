@@ -276,7 +276,7 @@ Ionic.Button = React.createClass({
 
         var cs = {'button': true}
         cs[color] = true
-        cs['icon'] = this.props.iconOnly
+        cs['icon button-icon'] = this.props.iconOnly
 
         if (this.props.className) {
             c[this.props.className] = true
